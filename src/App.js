@@ -8,6 +8,7 @@ import JacketsPage from "./pages/jacketspage/jacketspage.component";
 import SneakersPage from "./pages/sneakerspage/sneakerspage.component";
 import MensPage from "./pages/menspage/menspage.component";
 import WomensPage from "./pages/womenspage/womenspage.component";
+import SignInAndSignUp from "./pages/sign-in-and-sign-up/sign-in-and-sign-up.component";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route exact path="/shop/sneakers" component={SneakersPage} />
         <Route exact path="/shop/mens" component={MensPage} />
         <Route exact path="/shop/womens" component={WomensPage} />
+        <Route exact path="/signin" component={SignInAndSignUp} />
       </Switch>
     </div>
   );
