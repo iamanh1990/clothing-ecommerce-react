@@ -1,15 +1,15 @@
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/auth";
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/auth';
 
 const config = {
-  apiKey: "AIzaSyB7CnKYtkaHMzJjwcrWc-ERBswVwqe1ZbQ",
-  authDomain: "clothing-ecommerce-2a70b.firebaseapp.com",
-  projectId: "clothing-ecommerce-2a70b",
-  storageBucket: "clothing-ecommerce-2a70b.appspot.com",
-  messagingSenderId: "730341188154",
-  appId: "1:730341188154:web:b55c91247707f187f0cb03",
-  measurementId: "G-Y5MPNCCHLN",
+  apiKey: 'AIzaSyB7CnKYtkaHMzJjwcrWc-ERBswVwqe1ZbQ',
+  authDomain: 'clothing-ecommerce-2a70b.firebaseapp.com',
+  projectId: 'clothing-ecommerce-2a70b',
+  storageBucket: 'clothing-ecommerce-2a70b.appspot.com',
+  messagingSenderId: '730341188154',
+  appId: '1:730341188154:web:b55c91247707f187f0cb03',
+  measurementId: 'G-Y5MPNCCHLN',
 };
 
 firebase.initializeApp(config);
@@ -17,6 +17,7 @@ firebase.initializeApp(config);
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 
+//create new user in firebase
 export const createUserProfileDocument = async (userAuth, optionalData) => {
   if (!userAuth) return;
 
@@ -36,18 +37,20 @@ export const createUserProfileDocument = async (userAuth, optionalData) => {
         ...optionalData,
       });
     } catch (error) {
-      console.log("error creating user", error.message);
+      console.log('error creating user', error.message);
     }
   }
   return userRef;
 };
 
-const provider = new firebase.auth.GoogleAuthProvider();
-provider.setCustomParameters({
-  prompt: "select_account",
+//google provider
+export const googleProvider = new firebase.auth.GoogleAuthProvider();
+googleProvider.setCustomParameters({
+  prompt: 'select_account',
 });
 
-export const signInWithGoogle = () => auth.signInWithPopup(provider);
+//sign in with google popup
+export const signInWithGoogle = () => auth.signInWithPopup(googleProvider);
 
 //to update the data from app to firestore
 export const addCollectionAndDocuments = async (
@@ -79,6 +82,16 @@ export const convertCollectionsSnapshotToMap = (collections) => {
     accumulator[collection.title.toLowerCase()] = collection;
     return accumulator;
   }, {});
+};
+
+//get current user logged in from database
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = auth.onAuthStateChanged((userAuth) => {
+      unsubscribe(); // stop listening to Auth state change
+      resolve(userAuth);
+    }, reject);
+  });
 };
 
 export default firebase;
